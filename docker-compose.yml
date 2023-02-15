@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./web
+    command: gunicorn stripe_project.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+     - .:/app
+    expose:
+      - 8000
+    env_file:
+      - ./.env
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
+    depends_on:
+      - web
