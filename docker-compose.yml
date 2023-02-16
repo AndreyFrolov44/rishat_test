@@ -5,7 +5,7 @@ services:
     build: ./web
     command: gunicorn stripe_project.wsgi:application --bind 0.0.0.0:8000
     volumes:
-     - ./web:/app
+     - static_volume:/static
     expose:
       - 8000
     env_file:
@@ -14,8 +14,12 @@ services:
   nginx:
     build: ./nginx
     ports:
-      - 80:80
-    links:
-      - web:web
+      - "80:80"
+
     depends_on:
       - web
+    volumes:
+      - static_volume:/static
+
+volumes:
+  static_volume:
